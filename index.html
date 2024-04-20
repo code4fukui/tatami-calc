@@ -1,0 +1,78 @@
+<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><link rel="icon" href="data:">
+<title>tatami calc</title>
+</head><body>
+<h1>tatami calc</h1>
+<table>
+  <tr><th></th><th>幅</th><th></th><th>長さ</th></tr>
+  <tr><th>畳の大きさ</th><td><input id=inw value=800>mm</td><td>x</td><td><input id=inh value=800>mm</td></tr>
+  <tr><th>畳の枚数</th><td><select id=selnw></select></td><td>x</td><td><select id=selnh></select></td></tr>
+  <tr><th>部屋の大きさ</th><td><span id=tdw></span>mm</td><td>x</td><td><span id=tdh></span>mm</td></tr>
+  <tr><th>新しい畳の枚数</th><td><select id=selnw2></select></td><td>x</td><td><select id=selnh2></select></td></tr>
+  <tr><th>新しい畳の大きさ</th><td><span id=tdw2></span>mm</td><td>x</td><td><span id=tdh2></span>mm</td></tr>
+  <tr><th>差分</th><td><span id=tdwd></span>mm</td><td>x</td><td><span id=tdhd></span>mm</td></tr>
+</table>  
+
+<footer>
+<a href=https://github.com/code4fukui/tatami-calc/>src on GitHub</a>
+</footer>
+
+<script type="module">
+const calc = () => {
+  tdw.textContent = parseInt(inw.value * selnw.value);
+  tdh.textContent = parseInt(inh.value * selnh.value);
+  tdw2.textContent = parseInt(inw.value * selnw.value / selnw2.value);
+  tdh2.textContent = parseInt(inh.value * selnh.value / selnh2.value);
+  tdwd.textContent = tdw.textContent - tdw2.textContent * selnw2.value;
+  tdhd.textContent = tdh.textContent - tdh2.textContent * selnh2.value;
+  tdw2.style.backgroundColor = tdw2.textContent > 1000 ? "red" : "";
+  tdh2.style.backgroundColor = tdh2.textContent > 2000 ? "red" : "";
+};
+
+["selnw", "selnh", "selnw2", "selnh2"].forEach(id => {
+  const sel = document.getElementById(id);
+  for (let i = 1; i < 10; i++) {
+    const opt = document.createElement("option");
+    opt.value = i;
+    opt.textContent = i + "枚";
+    sel.appendChild(opt);    
+  }
+  sel.oninput = calc;
+});
+calc();
+</script>
+
+<style>
+body {
+  text-align: center;
+  font-family: sans-serif;
+}
+input {
+  width: 3em;
+  font-size: 18px;
+  margin: 0 .2em;
+  text-align: right;
+}
+select {
+  font-size: 18px;
+}
+table {
+  border-collapse: collapse;
+  display: inline-block;
+}
+th, td {
+  border: 1px solid #ddd;
+  min-width: 3em;
+  padding: .3em;
+}
+td {
+  text-align: center;
+}
+footer {
+  margin: 1em;
+}
+footer a {
+  color: gray !important;
+}
+</style>
+
+</body></html>
